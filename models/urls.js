@@ -12,7 +12,11 @@ const urlSchema = new mongoose.Schema({
     shortUrl: {
         type: String,
         required: true,
-    }
+    },
+    templateId: {
+        type: String,
+        required: true,
+    },
 },{ timestamps: true })
 
 module.exports = mongoose.model('smsUrls', urlSchema)

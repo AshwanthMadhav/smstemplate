@@ -51,7 +51,7 @@ app.post('/createSms', async (req, res) => {
     var i = 0;
     while ((match = re.exec(smsDet.content)) != null) {
       if (isUrl(words[i])) {
-        let short = await shortUrl(words[i])
+        let short = await shortUrl(words[i], id)
         words[i] = `<a href='${short}'>${short}</a>`
         console.log(words[i])
       }
@@ -92,6 +92,7 @@ app.get('/delete/:id', async (req, res) => {
     message: 'Id not exist!'
   });
   let response = await Sms.findOneAndDelete({ "_id": req.params.id })
+  Url.deleteMany({ templateId: req.params.id })
   if (!response) res.status(404).send({
     message: "Sms not found with id " + req.params.id
   });
@@ -102,12 +103,13 @@ app.get('/delete/:id', async (req, res) => {
 
 
 
-async function shortUrl(mainUrl) {
+async function shortUrl(mainUrl, id) {
   let code = await generateRandomString(6)
   let obj = {
     url: mainUrl,
     code: code,
-    shortUrl: baseUrl + '/' + code
+    shortUrl: baseUrl + '/' + code,
+    templateId: mongoose.Types.ObjectId(id)
   }
   let res = await Url.findOne({ url: mainUrl })
   if (res)
