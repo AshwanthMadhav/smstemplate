@@ -12,11 +12,6 @@ const urlSchema = new mongoose.Schema({
     shortUrl: {
         type: String,
         required: true,
-    },
-    hits: {
-        type: Number,
-        required: true,
-        default: 0
     }
 },{ timestamps: true })
 
