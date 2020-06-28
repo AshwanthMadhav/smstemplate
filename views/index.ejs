@@ -1,0 +1,48 @@
+    <%- include('header') %>
+    <div class='container'>
+        <h1>Sms Templates</h1>
+        <form action="/save" method="POST" class="form-inline">
+            <div class="form-group">
+                <input type="hidden" name="id" id="id" class="form-control">
+            </div>
+            <div class="form-group">
+                <input  type="text" name="content" id="content" class="form-control" required
+                    placeholder="Enter sms body here">
+            </div>
+            <button style="margin-left: 10px;" class="btn btn-primary" type="submit">Save</button>
+            <span style="font-size: 10px;color: red; margin-left: 10px;">Ex: Hi $name$, $wish$ for accepting me.</span>
+            <div style="margin-left: auto;">
+                <a href="/createSms" class="btn btn-light">Create SMS</a>
+            </div>
+        </form>
+
+        <table class="table" id="table" style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Sms content</th>
+                    <th>Created At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% sms.forEach((item,index) => { %>
+                <tr>
+                    <td><%= ++index;  %></td>
+                    <td><%= item.content %></td>
+                    <td><%= moment(item.createdAt).format('HH:mm:ss YYYY-MM-DD') %></td>
+                    <td onclick="edit('<%= item.id%>','<%= item.content%>')">Edit</td>
+                    <td><a href="/delete/<%= item._id  %>">Delete</a></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        function edit(id, content) {
+            document.getElementById("id").value = id;
+            document.getElementById("content").value = content;
+        }
+    </script>
+<%- include('footer') %>

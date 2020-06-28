@@ -1,0 +1,36 @@
+<%- include('header') %>
+<div class='container'>
+    <h1>Sms Templates</h1>
+    <h4>Create sms</h4>
+
+    <form action="/createSms" method="POST">
+        <div class="form-group">
+            <label>Select template</label>
+            <select id='template' name='template' class="custom-select custom-select-sm">
+                <%  for ( var i = 0; i < sms.length; i++ ){
+                let selected = ( i == 0 ) ? "selected" : "";
+                %>
+                <option value="<%=sms[i]._id %>" <%=selected %>><%=sms[i].content %></option>
+                <%}%>
+            </select>
+            
+      </div>
+      <div class="form-group">
+        <label >Dynamic texts <span style="font-size: 10px;color: red;">Enter input with comma seperated in the same order of dyanamic variables in the template. Ex:Hi $name$, thanks for $job$ $user$ ==> George,adding,me</span></label>
+        <textarea class="form-control rounded-0" name="dynamicTexts" id="dynamicTexts" rows="3"></textarea>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Create</button>
+      <a href='/' class="btn btn-info">Back</a>
+      
+    </form>
+
+</div>
+
+<script>
+    function edit(id, content) {
+        document.getElementById("id").value = id;
+        document.getElementById("content").value = content;
+    }
+</script>
+<%- include('footer') %>
