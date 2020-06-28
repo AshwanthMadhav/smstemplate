@@ -92,7 +92,6 @@ app.get('/delete/:id', async (req, res) => {
     message: 'Id not exist!'
   });
   let response = await Sms.findOneAndDelete({ "_id": req.params.id })
-  Url.deleteMany({ templateId: req.params.id })
   if (!response) res.status(404).send({
     message: "Sms not found with id " + req.params.id
   });
