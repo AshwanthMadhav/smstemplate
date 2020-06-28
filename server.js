@@ -5,11 +5,12 @@ const bodyParser = require('body-parser');
 const Url = require('./models/urls')
 const Sms = require('./models/sms')
 var isUrl = require('is-url')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const app = express()
 
-const production  = 'https://examplePage.com';
-const development = 'http://localhost:3000/';
-const url = (process.env.NODE_ENV ? production : development);
+const databaseUrl = process.env.DATABASE || 'mongodb://localhost:27017/smstemplate'
 
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 app.use(bodyParser.urlencoded({
@@ -17,7 +18,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://admin:admin2020@urlshortner-ordjy.mongodb.net/smstemplate?retryWrites=true&w=majority', {
+mongoose.connect(databaseUrl, {
   useNewUrlParser: true, useUnifiedTopology: true
 })
 
