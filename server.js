@@ -81,6 +81,12 @@ app.post('/save', [
   res.redirect('/')
 })
 
+app.get('/:code', async (req, res) => {
+  let response = await Url.findOne({ code: req.params.code })
+  if (!response) return res.sendStatus(404)
+  res.redirect(response.url)
+
+})
 app.get('/delete/:id', async (req, res) => {
   if (!req.params.id) return res.status(400).send({
     message: 'Id not exist!'
