@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const moment = require('moment')
 const bodyParser = require('body-parser');
+const { body, validationResult } = require('express-validator');
 const Url = require('./models/urls')
 const Sms = require('./models/sms')
 var isUrl = require('is-url')
@@ -62,7 +63,13 @@ app.post('/createSms', async (req, res) => {
 
 })
 
-app.post('/save', async (req, res) => {
+app.post('/save', [
+  body('content').isLength({ min: 5 })
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
   let obj = {
     content: req.body.content
   }
