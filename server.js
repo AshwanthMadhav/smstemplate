@@ -6,6 +6,11 @@ const Url = require('./models/urls')
 const Sms = require('./models/sms')
 var isUrl = require('is-url')
 const app = express()
+
+const production  = 'https://examplePage.com';
+const development = 'http://localhost:3000/';
+const url = (process.env.NODE_ENV ? production : development);
+
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 app.use(bodyParser.urlencoded({
   extended: true
@@ -45,7 +50,8 @@ app.post('/createSms', async (req, res) => {
     while ((match = re.exec(smsDet.content)) != null) {
       if (isUrl(words[i])) {
         let short = await shortUrl(words[i])
-        words[i] = "<a href='words[i]'>" + short + "</a>"
+        words[i] = `<a href='${short}'>${short}</a>`
+        console.log(words[i])
       }
       smsDet.content = smsDet.content.replace(match[0], (words[i]) ? words[i] : "")
       i++
